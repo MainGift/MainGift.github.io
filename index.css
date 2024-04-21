@@ -1,10 +1,76 @@
-body {
-    background-color: #f6f6f6;
+* {
+    padding: 0;
+    margin: 0;
 }
-.TitleBt{
-    background: #EEE url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAIAAAAmkwkpAAAAHklEQVQImWNkYGBgYGD4//8/A5wF5SBYyAr+//8PAPOCFO0Q2zq7AAAAAElFTkSuQmCC) repeat;
-    text-shadow: 5px -5px rgb(11, 26, 233), 4px -4px white;
+:root{
+    --Side-Menu-BgColor: #3b4147;
+    --Side-Menu-BgHoverColor: #abafb3;
+    --Side-Menu-FontColor: #f0f0f0;
+    --Side-Menu-HoverColor: #ffffff;
+    --border-radius: 3px;
+    --Side-Menu-TransitionTime: 0.2s;
+    --Side-Menu-LineColor: #d19a66;
+}
+.content {
+    background-color: #fefefe;
+}
+@font-face {
+    font-family: SpaceClaim;
+    src: url("SpaceClaim.ttf") format("truetype");
+}
+@font-face {
+    font-family: Segoe;
+    src: url("Segoe.ttf") format("truetype");
+}
+@font-face {
+    font-family: SegoeB;
     font-weight: bold;
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
+    src: url("SegoeB.ttf") format("truetype");
+}
+.Side-Menu-Box{
+    float: left;
+    box-shadow: 2px 0px 8px 5px #cdd2d7;
+    font-family: SpaceClaim;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+    position: relative;
+    min-height: 100vh;
+    box-sizing: border-box;
+    background-color: var(--Side-Menu-BgColor);
+}
+.Side-Menu-Box input[type='checkbox']{
+    display: none;
+}
+.Side-Menu{
+    padding: 4px 12px;
+    font-size: 20px;
+    width: 200px;
+    min-height: 100%;
+    cursor: pointer;
+    overflow: hidden;
+    transition: width var(--Side-Menu-TransitionTime);
+    color: var(--Side-Menu-FontColor);
+}
+.Side-Menu:hover{
+    background-color: var(--Side-Menu-BgHoverColor);
+}
+.BigTitle {
+    display: inline-block;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 40px;
+    font-weight: 999; 
+    color: #5da0b7;
+    text-transform: uppercase;
+}
+.Content-Page{
+    padding-top: 10px;
+    padding-left: 20px;
+    overflow: hidden;
+}
+.Menu{
+    text-decoration: none;
+    color: var(--Side-Menu-FontColor);
+}
+.paragraph{
+    padding: 10px 0 10px 0;
 }

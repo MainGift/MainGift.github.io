@@ -144,3 +144,52 @@
     padding: 10px 0 10px 0;
     line-height: 1.6; /* 优化文字行高，提升可读性 */
 }
+
+/* ------------------------------------- MIRRORS STYLE ------------------------------------- */
+/* 镜像源表格样式：统一对齐+圆角美化（核心修改圆角相关） */
+.resource-table {
+  width: 100%;
+  max-width: 800px; /* 限制表格宽度，避免太宽 */
+  /* 关键修改1：取消边框合并，解决圆角不生效问题 */
+  border-collapse: separate;
+  border-spacing: 0; /* 消除单元格之间的间距，保持整齐 */
+  margin: 10px 0;
+  font-size: 18px; /* 统一字体大小 */
+  /* 关键修改2：设置表格整体圆角，overflow:hidden 隐藏内部超出圆角的边框 */
+  border-radius: 7px; /* 圆角半径，可调整为 10px、12px 等，数值越大圆角越明显 */
+  overflow: hidden;
+}
+
+/* 表头样式 */
+.resource-table th {
+  background-color: #f0f8ff; /* 浅蓝色背景区分表头 */
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-bottom: 2px solid #d0e8ff; /* 表头底部边框加粗，更醒目 */
+  text-align: left;
+  color: #333;
+  /* 取消表头单独圆角，依靠表格整体 overflow:hidden 实现 */
+}
+
+/* 表格单元格样式 */
+.resource-table td {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  /* 关键修改3：消除单元格多余边框，避免圆角处边框重叠杂乱 */
+  border-top: none; /* 取消顶部边框，仅保留左右和底部 */
+}
+
+/* 修复表格第一行单元格的顶部边框（与表头衔接） */
+.resource-table tbody tr:first-child td {
+  border-top: 1px solid #ddd;
+}
+
+/* 软件链接样式（统一颜色+ hover效果，保留原有风格） */
+.resource-link {
+  color: rgb(0, 200, 0); /* 保留原来的绿色 */
+  text-decoration: none;
+  font-weight: bold;
+}
+.resource-link:hover {
+  text-decoration: underline; /*  hover时加下划线，提示可点击 */
+}

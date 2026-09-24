@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>KukeChat 独立窗口</title>
+  <style>
+    /* 避免全屏白底干扰，给个干净背景 */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #f0f2f5;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      background: white;
+      padding: 16px 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .toolbar button {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #168bff;
+      color: white;
+      transition: 0.15s;
+    }
+    .toolbar button:hover {
+      background: #0a6fd6;
+      transform: translateY(-1px);
+    }
+    .toolbar button.close-btn {
+      background: #e8ecf0;
+      color: #1f2a3a;
+    }
+    .toolbar button.close-btn:hover {
+      background: #d5dae0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 控制按钮 -->
+  <div class="toolbar">
+    <button id="openBtn">💬 打开 KukeChat</button>
+    <button id="closeBtn" class="close-btn">关闭窗口</button>
+    <button id="minBtn" class="close-btn">最小化</button>
+  </div>
+
+  <!-- 这个 div 会被 Shadow DOM 接管，里面就是 KukeChat 的完整界面 -->
+  <div id="kukechat-shadow-host"></div>
+
+  <!-- 1️⃣ 加载 React 核心（必须最先加载） -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js">
+  </script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js">
+  </script>
+
+  <!-- 2️⃣ 模拟 Scratch 全局对象（防报错，扩展用不到但会检测） -->
+  <script>
+    if (typeof window.Scratch === 'undefined') {
+      window.Scratch = {
+        BlockType: {},
+        ArgumentType: {},
+      };
+    }
+    // 如果缺少某些 Symbol，补一下（KukeChat 用到了 Symbol.for）
+    if (typeof Symbol.for === 'undefined') {
+      window.Symbol.for = function(key) { return key; };
+    }
+  </script>
+
+  <!-- 3️⃣ 把 KukeChat 扩展代码保存为 kukechat.js，然后加载 -->
+  <!-- 注意：这里假设你把那一大坨压缩代码放到了同目录的 kukechat.js 里 -->
+  <script src="kukechat.js"></script>
+
+  <script>
+    // 4️⃣ 等待脚本解析完成，然后通过桥接器控制窗口
+    (function() {
+      // 轮询等待 bridge 就绪
+      let attempts = 0;
+      const maxAttempts = 30;
+
+      function initBridge() {
+        const bridge = window.__KukeChatExtensionBridge;
+        if (bridge && typeof bridge.openWindow === 'function') {
+          console.log('[KukeChat] Bridge 已就绪');
+
+          // 绑定按钮
+          document.getElementById('openBtn').addEventListener('click', () => {
+            bridge.openWindow();
+          });
+          document.getElementById('closeBtn').addEventListener('click', () => {
+            bridge.closeWindow();
+          });
+          document.getElementById('minBtn').addEventListener('click', () => {
+            bridge.minimizeWindow();
+          });
+
+          bridge.openWindow();
+          return;
+        }
+
+        attempts++;
+        if (attempts < maxAttempts) {
+          setTimeout(initBridge, 150);
+        } else {
+          console.error('[KukeChat] Bridge 初始化超时，请确认 kukechat.js 已正确加载');
+        }
+      }
+
+      initBridge();
+    })();
+  </script>
+
+</body>
+</html>
